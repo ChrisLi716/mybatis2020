@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="dbconfig.properties"/>
+
+    <settings>
+        <!--开启表中下划线字段A_COLUMN转JavaBean 驼峰字段aColumn-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--
+    别名处理器，可以为Java类型起别名, 且别名不区分大小写
+    type:为Java类型的全类名，没有设置别名的情况下默认别名为类名全小写, com.mybatis.entity.Employee的默认别名为employee
+    alias: 为Java类型指定别名
+    -->
+    <typeAliases>
+        <typeAlias type="com.mybatis.entity.Employee" alias="emp"/>
+
+        <!--
+        为当前包以及子包里面的类起一个默认的别名
+        批量起别名时如果别名重复，可以使用@Alias("employeeAlias")为Java类指定新的别名
+        -->
+        <package name="com.mybatis.entity"/>
+    </typeAliases>
+
+    <environments default="dev_mysql">
+        <environment id="dev_mysql">
+            <!-- 有两种类型的事务控制 JDBC|MANAGED , org.apache.ibatis.session.Configuration-->
+            <transactionManager type="JDBC"/>
+            <!--
+           数据源
+           type:
+               UNPOOLED:不使用连接池的数据源
+               POOLED:使用边境池的数据源
+               JNDI:
+               自定义数据源:实现DataSourceFactory接口-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+       <!-- 未配置，请自行实现
+       <environment id="dev_oracle">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${oracle.driver}"/>
+                <property name="url" value="${oracle.url}"/>
+                <property name="username" value="${oracle.username}"/>
+                <property name="password" value="${oracle.password}"/>
+            </dataSource>
+        </environment>-->
+    </environments>
+
+    <!--
+    用来支持多数据库
+    type: DB_VENDOR, 厂商标识由驱动自带
+    -->
+    <databaseIdProvider type="DB_VENDOR">
+        <!--
+        为不同的数据库厂商标识起别名
+        name:数据库厂商标识
+        value:别名
+        -->
+        <property name="MYSQL" value="mysql"/>
+        <property name="Oracle" value="oralce"/>
+        <property name="SQL Server" value="sqlserver"/>
+    </databaseIdProvider>
+
+    <!-- 将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件（mybatis-config.xml）中 -->
+    <mappers>
+       <!-- 批量注册
+       name:接口所在的包路径
+       适用于通过注解实现SQL映射的接口，对于通过配置文件实现的SQL映射，需要将XML文件与接口放在一起，否则无法批量注册
+       -->
+        <mapper class="com.mybatis.dao.mapper.EmployeeMapper"/>
+       <!-- <package name="com.mybatis.dao.mapper"/>-->
+    </mappers>
+
+</configuration>
