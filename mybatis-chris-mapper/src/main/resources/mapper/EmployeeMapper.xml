@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mybatis 支持namespace与接口名称绑定 -->
+<mapper namespace="com.mybatis.dao.mapper.EmployeeMapper">
+
+
+    <select id="getEmployeeById" resultType="com.mybatis.entity.Employee">
+        select *
+        from employee
+        where id = #{id}
+    </select>
+
+    <!--
+    获取MySql自增主键
+    parameterType: 可以省略
+    useGeneratedKeys: 设置为true，使用自增主键策略获取主键
+    keyProperty: 指定对应的主键属性，即当获取主键后将值封装给JavaBean中的哪个属性
+    -->
+    <insert id="addEmployee" parameterType="com.mybatis.entity.Employee" useGeneratedKeys="true" keyProperty="id">
+        insert into employee (last_name, email, gender)
+        values (#{lastName}, #{email}, #{gender})
+    </insert>
+
+
+    <!--
+    使用Oracle Sequence添加员工记录前获取ID
+    -->
+    <insert id="addEmployee" parameterType="com.mybatis.entity.Employee" databaseId="oracle">
+        <!--
+        keyProperty: 指定对应的主键属性，即当获取主键后将值封装给JavaBean中的哪个属性
+        order: BEFORE 当前SQL在插入SQL之前运行
+               AFTER  当前SQL在插入SQL之后运行
+        resultType: 查出的数据返回类型
+        -->
+        <selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+            select EMPLOYEES_SEQ.nextval from dual
+        </selectKey>
+        <!-- 插入时的主键是从序列中拿到 -->
+        insert into employee (id, last_name, email, gender)
+        values (#{id}, #{lastName}, #{email}, #{gender})
+    </insert>
+
+    <!--
+    使用Oracle Sequence添加员工记录后获取ID
+     -->
+    <insert id="addEmployee" parameterType="com.mybatis.entity.Employee" databaseId="oracle">
+        <!--
+        keyProperty: 指定对应的主键属性，即当获取主键后将值封装给JavaBean中的哪个属性
+        order: BEFORE 当前SQL在插入SQL之前运行
+               AFTER  当前SQL在插入SQL之后运行
+        resultType: 查出的数据返回类型
+        -->
+        <selectKey keyProperty="id" order="AFTER" resultType="Integer">
+            select EMPLOYEES_SEQ.currval from dual
+        </selectKey>
+        <!-- 插入时的主键是从序列中拿到 -->
+        insert into employee (id, last_name, email, gender)
+        values (EMPLOYEES_SEQ.nextval, #{lastName}, #{email}, #{gender})
+    </insert>
+
+    <update id="updateEmployee" useGeneratedKeys="true" keyProperty="id">
+        update employee t
+        set t.last_name=#{lastName},
+            t.email=#{email},
+            gender=#{gender}
+        where t.id = #{id}
+    </update>
+
+    <delete id="deleteEmployeeById">
+        delete
+        from employee
+        where id = #{id}
+    </delete>
+
+
+    <!-- 多参数-->
+    <select id="getEmployeeByIdAndName" resultType="com.mybatis.entity.Employee">
+        select *
+        from employee
+        where id = #{param1}
+          and last_name = #{param2}
+    </select>
+
+    <select id="getEmployeeByIdAndName2" resultType="com.mybatis.entity.Employee">
+        select *
+        from employee
+        where id = #{id}
+          and last_name = #{lastName}
+    </select>
+
+    <select id="getEmployeeByMap" resultType="com.mybatis.entity.Employee">
+        select *
+        from employee
+        where id = #{p_id}
+          and last_name = #{p_lastName}
+    </select>
+
+    <!--动态SQL-->
+    <select id="dynamicSql" resultType="com.mybatis.entity.Employee">
+        select *
+        from ${tableName}
+        where gender = #{p_gender}
+        order by ${sortFieldName} ${sort}
+    </select>
+
+    <!--
+     MyBatis将所有的null都映射为原生的 OTHER(Types.OTHER)
+     Oracle无法处理Other类型
+     需要指定字段值为空时的JDBC类型jdbcType=NULL,
+     或者在全局配置中设置 <setting name="jdbcTypeForNull" value="NULL"/>
+    -->
+    <insert id="addEmployeeWithNull" parameterType="com.mybatis.entity.Employee" databaseId="oracle">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+            select EMPLOYEES_SEQ.nextval from dual
+        </selectKey>
+        <!-- 插入时的主键是从序列中拿到 -->
+        insert into employee (id, last_name, email, gender)
+        values (#{id}, #{lastName}, #{email, jdbcType=NULL}, #{gender})
+    </insert>
+
+
+    <!--测试返回结果为map-->
+    <select id="getEmployeeReturnMap" resultType="map">
+        select *
+        from employee t
+        where t.id = #{id}
+    </select>
+
+    <!--测试返回结果为多个MAP对象-->
+    <select id="getEmployeeByGenderReturnMap" resultType="com.mybatis.entity.Employee">
+        select *
+        from employee t
+        where t.gender = #{gender}
+    </select>
+</mapper>

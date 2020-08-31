@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.mapper.EmployeeMapper2">
+
+
+    <!--
+    自定义表字段名称与JavaBean属性的映射
+    type: JavaBean类型
+    id: resultMap唯一标识，方便被引用
+    -->
+    <resultMap id="employeeMap" type="com.mybatis.entity.Employee">
+        <!--
+        指定主键列的封装规则
+        column: 表字段名称
+        property: JavaBean类型属性
+        -->
+        <id column="id" property="id"/>
+        <!-- 定义普通列封装规则 -->
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <!--不在此处配置的列，会自动映射，但如果使用resultMap,建议把所有列都配置出来-->
+
+    </resultMap>
+
+    <select id="getEmployeeByGenderReturnMap" resultMap="employeeMap">
+        select *
+        from employee t
+        where t.gender = #{gender}
+    </select>
+
+
+    <resultMap id="empDeptMap" type="com.mybatis.entity.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <result column="did" property="dept.id"/>
+        <result column="department_name" property="dept.name"/>
+
+
+    </resultMap>
+
+    <select id="getEmpAndDept" resultMap="empDeptMap">
+        select t.id, t.last_name, t.email, t.gender, d.id did, d.department_name
+        from employee t,
+             department d
+        where t.id = #{id}
+          and t.department_id = d.id
+    </select>
+
+</mapper>
