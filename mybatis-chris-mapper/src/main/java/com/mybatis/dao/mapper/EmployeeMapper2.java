@@ -16,4 +16,6 @@ public interface EmployeeMapper2 {
 
     Employee getEmpAndDept(int empId);
 
+    Employee getEmpAndDept2(int empId);
+
 }

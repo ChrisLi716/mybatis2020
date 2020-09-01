@@ -46,7 +46,7 @@ public class MapperTest2 {
     }
 
     /**
-     * 测试resultMap级联查询
+     * 通过级联属性的方式进行联合查询
      */
     @Test
     public void testAssociateResultMap() throws IOException {
@@ -68,5 +68,33 @@ public class MapperTest2 {
             }
         }
     }
+
+
+
+    /**
+     * 使用association进入级联查询
+     */
+    @Test
+    public void testAssociateResultMap2() throws IOException {
+        SqlSessionFactory sqlSessionFactory;
+        SqlSession openSession = null;
+        try {
+            sqlSessionFactory = getSqlSessionFactory();
+            openSession = sqlSessionFactory.openSession();
+            EmployeeMapper2 employeeMapper2 = openSession.getMapper(EmployeeMapper2.class);
+            Employee employee = employeeMapper2.getEmpAndDept2(1);
+            openSession.commit();
+            System.out.println(employee.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (null != openSession) {
+                openSession.close();
+            }
+        }
+    }
+
+
 
 }

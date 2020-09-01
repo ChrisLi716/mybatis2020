@@ -34,7 +34,7 @@ public class MapperTest {
             sqlSessionFactory = getSqlSessionFactory();
             openSession = sqlSessionFactory.openSession();
             EmployeeMapper employeeMapper = openSession.getMapper(EmployeeMapper.class);
-            Employee employee = new Employee("Cano", "Cano@gmail.com", "F");
+            Employee employee = new Employee("Nancy", "Nancy@hormail.com", "F");
             employeeMapper.addEmployee(employee);
             System.out.println("add user id:" + employee.getId());
             openSession.commit();

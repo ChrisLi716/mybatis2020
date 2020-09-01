@@ -32,6 +32,7 @@
     </select>
 
 
+    <!--通过级联属性的方式进行联合查询-->
     <resultMap id="empDeptMap" type="com.mybatis.entity.Employee">
         <id column="id" property="id"/>
         <result column="last_name" property="lastName"/>
@@ -39,11 +40,36 @@
         <result column="gender" property="gender"/>
         <result column="did" property="dept.id"/>
         <result column="department_name" property="dept.name"/>
-
-
     </resultMap>
 
     <select id="getEmpAndDept" resultMap="empDeptMap">
+        select t.id, t.last_name, t.email, t.gender, d.id did, d.department_name
+        from employee t,
+             department d
+        where t.id = #{id}
+          and t.department_id = d.id
+    </select>
+
+    <!--使用association进入级联查询-->
+    <resultMap id="empDeptMap2" type="com.mybatis.entity.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <!--
+        association 可以指定联合的JavaBean对象
+        property="dept"指定哪个属性是联合的对象
+        javaType指定这个联合对象的Java类型
+        -->
+        <association property="dept" javaType="com.mybatis.entity.Employee">
+            <!-- column="did" 一个resultMap里面列名不能重复 -->
+            <id column="did" property="id"/>
+            <result column="department_name" property="name"/>
+        </association>
+
+    </resultMap>
+
+   <select id="getEmpAndDept2" resultMap="empDeptMap2">
         select t.id, t.last_name, t.email, t.gender, d.id did, d.department_name
         from employee t,
              department d
