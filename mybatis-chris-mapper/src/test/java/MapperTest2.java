@@ -1,3 +1,4 @@
+import com.mybatis.dao.mapper.EmployeeMapper;
 import com.mybatis.dao.mapper.EmployeeMapper2;
 import com.mybatis.entity.Employee;
 import org.apache.ibatis.io.Resources;
@@ -70,7 +71,6 @@ public class MapperTest2 {
     }
 
 
-
     /**
      * 使用association进入级联查询
      */
@@ -95,6 +95,29 @@ public class MapperTest2 {
         }
     }
 
+    /**
+     * 使用association进行分步查询
+     */
+    @Test
+    public void testEmpDeptBySteps() throws IOException {
+        SqlSessionFactory sqlSessionFactory;
+        SqlSession openSession = null;
+        try {
+            sqlSessionFactory = getSqlSessionFactory();
+            openSession = sqlSessionFactory.openSession();
+            EmployeeMapper2 employeeMapper2 = openSession.getMapper(EmployeeMapper2.class);
+            Employee employee = employeeMapper2.getEmpById(1);
+            openSession.commit();
+            System.out.println(employee.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (null != openSession) {
+                openSession.close();
+            }
+        }
+    }
 
 
 }

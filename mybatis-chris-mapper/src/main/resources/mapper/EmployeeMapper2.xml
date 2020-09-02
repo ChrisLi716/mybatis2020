@@ -31,7 +31,6 @@
         where t.gender = #{gender}
     </select>
 
-
     <!--通过级联属性的方式进行联合查询-->
     <resultMap id="empDeptMap" type="com.mybatis.entity.Employee">
         <id column="id" property="id"/>
@@ -50,8 +49,7 @@
           and t.department_id = d.id
     </select>
 
-
-    <!--使用association进入级联查询-->
+    <!--使用association进行级联查询-->
     <resultMap id="empDeptMap2" type="com.mybatis.entity.Employee">
         <id column="id" property="id"/>
         <result column="last_name" property="lastName"/>
@@ -78,4 +76,25 @@
           and t.department_id = d.id
     </select>
 
+
+    <!--使用association进行分步查询-->
+    <resultMap id="empDeptBySteps" type="com.mybatis.entity.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <!--
+        1.先根据员工id查询到员工信息
+        2.再根据员工信息中的d_id查询部门信息
+        3.再将部门信息封闭到员工对象中
+        select：表示当前关联的对象是调用指定的方式查询出来的结果
+        column="department_id":指定传入select中方法的参数，此参数来自于第一个方法“getEmpById”中查询的结果集里面
+        -->
+        <association property="dept" javaType="com.mybatis.entity.Department"
+                     select="com.mybatis.dao.mapper.DepartmentMapper.getDeptById" column="department_id"/>
+    </resultMap>
+
+    <select id="getEmpById" resultMap="empDeptBySteps">
+        select * from employee t where t.id = #{id}
+    </select>
 </mapper>

@@ -28,7 +28,7 @@
         <package name="com.mybatis.entity"/>
     </typeAliases>
 
-    <environments default="dev_mysql">
+    <environments default="dev_mysql_home">
         <environment id="dev_mysql">
             <!-- 有两种类型的事务控制 JDBC|MANAGED , org.apache.ibatis.session.Configuration-->
             <transactionManager type="JDBC"/>
@@ -89,6 +89,7 @@
     <mappers>
         <mapper resource="./mapper/EmployeeMapper.xml"/>
         <mapper resource="./mapper/EmployeeMapper2.xml"/>
+        <mapper resource="./mapper/DepartmentMapper.xml"/>
     </mappers>
 
 </configuration>
