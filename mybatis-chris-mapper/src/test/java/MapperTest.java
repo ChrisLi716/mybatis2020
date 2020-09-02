@@ -14,8 +14,6 @@ import java.util.Map;
 
 public class MapperTest {
 
-    private Object HashMap;
-
     private SqlSessionFactory getSqlSessionFactory() throws IOException {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);

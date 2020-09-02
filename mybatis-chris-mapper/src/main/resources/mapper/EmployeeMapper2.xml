@@ -50,6 +50,7 @@
           and t.department_id = d.id
     </select>
 
+
     <!--使用association进入级联查询-->
     <resultMap id="empDeptMap2" type="com.mybatis.entity.Employee">
         <id column="id" property="id"/>
@@ -61,7 +62,7 @@
         property="dept"指定哪个属性是联合的对象
         javaType指定这个联合对象的Java类型
         -->
-        <association property="dept" javaType="com.mybatis.entity.Employee">
+        <association property="dept" javaType="com.mybatis.entity.Department">
             <!-- column="did" 一个resultMap里面列名不能重复 -->
             <id column="did" property="id"/>
             <result column="department_name" property="name"/>
@@ -69,7 +70,7 @@
 
     </resultMap>
 
-   <select id="getEmpAndDept2" resultMap="empDeptMap2">
+    <select id="getEmpAndDept2" resultMap="empDeptMap2">
         select t.id, t.last_name, t.email, t.gender, d.id did, d.department_name
         from employee t,
              department d
