@@ -32,3 +32,5 @@ build/
 
 mvnw*
 /.mvn
+
+log.log
