@@ -9,7 +9,7 @@ CREATE TABLE employee(
 
 CREATE TABLE department(
 	id int(11) primary key auto_increment,
-	department_name varchar(255)
+	name varchar(255)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 ALTER TABLE employee ADD COLUMN department_id int(11);
@@ -17,5 +17,5 @@ ALTER TABLE employee ADD COLUMN department_id int(11);
 ALTER TABLE employee ADD CONSTRAINT fk_employee_department
 FOREIGN KEY(department_id) REFERENCES department(id);
 
-INSERT INTO department(department_name) values ('开发部');
-INSERT INTO department(department_name) values ('测试部');
+INSERT INTO department(name) values ('开发部');
+INSERT INTO department(name) values ('测试部');

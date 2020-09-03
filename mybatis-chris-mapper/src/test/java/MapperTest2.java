@@ -106,9 +106,8 @@ public class MapperTest2 {
             sqlSessionFactory = getSqlSessionFactory();
             openSession = sqlSessionFactory.openSession();
             EmployeeMapper2 employeeMapper2 = openSession.getMapper(EmployeeMapper2.class);
-            Employee employee = employeeMapper2.getEmpById(1);
+            Employee employee = employeeMapper2.getEmpById(4);
             openSession.commit();
-            System.out.println(employee.toString());
         } catch (IOException e) {
             e.printStackTrace();
             throw e;
