@@ -3,6 +3,7 @@ package com.mybatis.dao.mapper;
 import com.mybatis.entity.Employee;
 import org.apache.ibatis.annotations.MapKey;
 
+import java.util.List;
 import java.util.Map;
 
 public interface EmployeeMapper2 {
@@ -11,7 +12,7 @@ public interface EmployeeMapper2 {
      * 多条记录封装在Map<String, Employee>
      * MapKey 告诉mybatis用Employee的哪个属性作为map的key
      */
-    @MapKey("id")
+    @MapKey ("id")
     Map<Integer, Employee> getEmployeeByGenderReturnMap(String gender);
 
     Employee getEmpAndDept(int empId);
@@ -20,4 +21,5 @@ public interface EmployeeMapper2 {
 
     Employee getEmpById(int id);
 
+    List<Employee> getEmpByIdwithDiscriminator();
 }

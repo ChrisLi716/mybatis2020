@@ -134,4 +134,19 @@
         from employee t
         where t.gender = #{gender}
     </select>
+
+
+    <!--
+    分步查询部门下的员工信息
+    1.先查询出部门信息
+    2.再根据部门ID查询出员工信息
+    -->
+    <select id="getEmployeeByDeptId" resultType="com.mybatis.entity.Employee">
+        select *
+        from employee
+        where department_id = #{department_id}
+    </select>
+
+
+
 </mapper>

@@ -12,7 +12,7 @@ public interface EmployeeMapper {
 
     Employee getEmployeeByIdAndName(int id, String lastName);
 
-    Employee getEmployeeByIdAndName2(@Param("id") int id, @Param("lastName") String lastName);
+    Employee getEmployeeByIdAndName2(@Param ("id") int id, @Param ("lastName") String lastName);
 
     Map<String, Object> getEmployeeReturnMap(int id);
 
@@ -20,7 +20,7 @@ public interface EmployeeMapper {
      * 多条记录封装在Map<String, Employee>
      * MapKey 告诉mybatis用Employee的哪个属性作为map的key
      */
-    @MapKey("id")
+    @MapKey ("id")
     Map<Integer, Employee> getEmployeeByGenderReturnMap(String gender);
 
 
@@ -34,5 +34,6 @@ public interface EmployeeMapper {
 
     List<Employee> dynamicSql(Map<String, Object> map);
 
+    Employee getEmployeeByDeptId(int i);
 
 }
