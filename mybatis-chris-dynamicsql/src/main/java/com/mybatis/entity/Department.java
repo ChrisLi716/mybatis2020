@@ -14,4 +14,8 @@ public class Department {
     private int id;
     private String name;
     private List<Employee> emps;
+
+    public Department(int id) {
+        this.id = id;
+    }
 }

@@ -111,4 +111,24 @@
         </foreach>
     </select>
 
+    <insert id="addEmpsInBatch">
+        insert into employee (last_name, email,gender,department_id)
+        <foreach collection="emps" item="emp" open="values" separator=",">
+            (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
+        </foreach>
+    </insert>
+
+   <!-- Caused by: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into employee (last_name, email,gender,department_id)values
+    (' at line 4
+    需要打开MYSQL的批量写入模式:allowMultiQueries=true
+    jdbc.home.url=jdbc:mysql://192.168.101.127:3306/chris?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT
+    -->
+    <insert id="addEmpsInBatch2">
+        <foreach collection="emps" item="emp"  separator=";">
+            insert into employee (last_name, email,gender,department_id)values
+            (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
+        </foreach>
+    </insert>
+
+
 </mapper>

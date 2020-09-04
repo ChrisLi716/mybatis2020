@@ -32,6 +32,11 @@ public class Employee {
         this.id = id;
     }
 
+    public Employee(String lastName, String email, String gender, Department dept) {
+        this(lastName, email, gender);
+        this.dept = dept;
+    }
+
 
     @Override
     public String toString() {
