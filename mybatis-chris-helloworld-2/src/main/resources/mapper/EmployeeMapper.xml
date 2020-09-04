@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- mybatis 支持namespace与接口名称绑定 -->
-<mapper namespace="com.mybatis.dao.mapper.EmployeeMapper">
+<mapper namespace="com.mybatis.dao.mapper.DynamicSqlMapper">
 
     <!-- 测试默认别名, 别名不区分大小写 Employee和employ都可以-->
     <!--<select id="testDefaultAlias" resultType="Employee">

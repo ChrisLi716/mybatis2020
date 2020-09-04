@@ -13,6 +13,7 @@
         <module>mybatis-chris-helloworld-2</module>
         <module>mybatis-chris-helloworld-3</module>
         <module>mybatis-chris-mapper</module>
+        <module>mybatis-chris-dynamicsql</module>
     </modules>
 
 
@@ -25,6 +26,7 @@
         <lombok.version>1.18.12</lombok.version>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>2.0.0-alpha1</slf4j.version>
     </properties>
 
 
@@ -55,6 +57,21 @@
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
                 <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bgee.log4jdbc-log4j2</groupId>
+                <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+                <version>1.16</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

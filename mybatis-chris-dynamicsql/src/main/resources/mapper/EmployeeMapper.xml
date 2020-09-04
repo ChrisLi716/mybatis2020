@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.mapper.DynamicSqlMapper">
+
+    <select id="getempsbyconditionIf" resultType="com.mybatis.entity.Employee">
+        select * from employee t
+        <!--
+        where:用来封装查询条件，会将SQL中多出来的and和or去掉,但是只去掉第一个and和or
+        -->
+        <where>
+            /* 1. test:判断表达式，使用OGNL表达式
+            https://commons.apache.org/proper/commons-ognl/language-guide.html
+            遇见特殊符号应该转为转义字符*/
+            <if test="id != null">
+                t.id = #{id}
+            </if>
+            <if test="lastName != null and lastName!= '' ">
+                and t.last_name=#{lastName}
+            </if>
+            <if test="email != null and email.trim() !='' ">
+                and t.email=#{email}
+            </if>
+            <if test='gender != null and (gender =="F" || gender =="M")'>
+                and t.gender=#{gender}
+            </if>
+        </where>
+    </select>
+
+    <select id="getempsbyconditionTrim" resultType="com.mybatis.entity.Employee">
+        select * from employee t
+
+        <!--
+            prefix: 对trim中整个字符串拼串后的结果加一个前缀
+            prefixOverrides: 前缀覆盖，去掉整个拼串前面多余的字符串
+            suffix: 对trim中整个字符串拼串后的结果加一个后缀
+            suffixOverrides: 后缀覆盖，去掉整个拼串前面多余的字符串
+        -->
+        <trim prefix="where" suffixOverrides="and">
+            <if test="id != null">
+                t.id = #{id} and
+            </if>
+            <if test="lastName != null and lastName!= '' ">
+                t.last_name=#{lastName} and
+            </if>
+            <if test="email != null and email.trim() !='' ">
+                t.email=#{email} and
+            </if>
+            <if test='gender != null and (gender =="F" || gender =="M")'>
+                t.gender=#{gender}
+            </if>
+        </trim>
+    </select>
+
+    <!--
+    分技选择
+    -->
+    <select id="getempsbyconditionChoose" resultType="com.mybatis.entity.Employee">
+        select * from employee t
+        <where>
+            <choose>
+                <when test="id!=null">id=#{id}</when>
+                <when test="lastName!=null">last_name=#{lastName}</when>
+                <when test="email!=null and email.trim()!='' ">email=#{email}</when>
+                <otherwise>
+                    <!--查询所有-->
+                    1 = 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!--
+    参数中带了哪一个参数则更新此参数对应的字段
+    <set>用来封装修改字段
+    也可以用tirm替换set标签
+    <trim prefix="set" prefixOverrides=",">
+    -->
+    <update id="updateEmp">
+        update employee t
+        <set>
+            <if test="lastName!=null and lastName.trim()!=''">
+                t.last_name=#{lastName},
+            </if>
+            <if test="email!=null and email.trim()!=''">
+                t.email=#{email},
+            </if>
+            <if test='gender!=null and  (gender =="F" || gender =="M")'>
+                t.gender=#{gender},
+            </if>
+        </set>
+        where t.id = #{id}
+    </update>
+
+    <!--
+       connection:指定要遍历的集合名称
+            list类型的参数会特殊处理封装在map中,这个map的key名称是list
+       item:将当前遍历出的值赋值给指定变更
+       separator元素之间的分隔符
+       open：封装遍历结果的开始字符
+       close：封装遍历结果的结束字符
+       index:索引，遍历list时，index是当前元素的索引，item为当前元素的值
+             遍历map时，index是当前元素的key，item为当前元素的值
+       #{变量名}就能取出变量的值也就是当前遍历出的元素
+    -->
+    <select id="getEmpsByConditionForeach" resultType="com.mybatis.entity.Employee">
+        select * from employee where id in
+        <foreach collection="list" item="id" separator="," open="(" close=")" index="inx">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

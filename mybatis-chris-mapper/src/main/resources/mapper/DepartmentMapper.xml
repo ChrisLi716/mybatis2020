@@ -48,7 +48,7 @@
         fetchType: 即使全局打开了延时加载，也可以指定针对此关联查询是否要进行延时加载，
                    eager：立即加载，lazy:延时加载
         -->
-        <collection property="emps" select="com.mybatis.dao.mapper.EmployeeMapper.getEmployeeByDeptId" column="id"
+        <collection property="emps" select="com.mybatis.dao.mapper.DynamicSqlMapper.getEmployeeByDeptId" column="id"
                     javaType="List" fetchType="lazy"/>
     </resultMap>
     <select id="getDeptByIdStep" resultMap="deptWithEmpsByStep">

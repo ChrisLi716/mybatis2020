@@ -77,7 +77,7 @@
        name:接口所在的包路径
        适用于通过注解实现SQL映射的接口，对于通过配置文件实现的SQL映射，需要将XML文件与接口放在一起，否则无法批量注册
        -->
-        <mapper class="com.mybatis.dao.mapper.EmployeeMapper"/>
+        <mapper class="com.mybatis.dao.mapper.DynamicSqlMapper"/>
        <!-- <package name="com.mybatis.dao.mapper"/>-->
     </mappers>
 

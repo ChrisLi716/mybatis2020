@@ -3,10 +3,12 @@ import com.mybatis.dao.mapper.EmployeeMapper2;
 import com.mybatis.entity.Department;
 import com.mybatis.entity.Employee;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
+import sun.net.www.http.HttpClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -198,6 +200,9 @@ public class MapperTest2 {
                 openSession.close();
             }
         }
+    }
+
+    public static void main(String[] args) {
     }
 
 }
