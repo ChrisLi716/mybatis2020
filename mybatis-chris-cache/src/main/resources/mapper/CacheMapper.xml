@@ -4,6 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.dao.mapper.CacheMapper">
 
+    <!--
+     eviction:缓存的回收策略,默认的是 LRU。
+        LRU – 最近最少使用的：移除最长时间不被使用的对象。
+        FIFO – 先进先出：按对象进入缓存的顺序来移除它们。
+        SOFT – 软引用：移除基于垃圾回收器状态和软引用规则的对象。
+        WEAK – 弱引用：更积极地移除基于垃圾收集器状态和弱引用规则的对象。
+     flushInterval:缓存刷新时间间隔，多次清空一次缓存，默认不清空。可以设置毫秒值
+     readOnly：缓存是否只读，
+        true为只读，mybatis认为从缓存中获取的数据不会被修改，会将缓存数据的引用交给使用者，快但是不安全，因为缓存中的数据会被修改。
+        false为非只读，mybatis认为获取的数据可能会被修改，mybatis会使用序列化与反序列化clone一份原数据给到，安全但是因为有序列化和反序列化的过程会比较慢
+     size：缓存存放对象的个数
+     type：自定义缓存的全类名，自定义缓存需要实现Cache接口
+     -->
+    <cache eviction="FIFO" flushInterval="60000" readOnly="false" size="1024"/>
     <select id="getEmpById" resultType="com.mybatis.entity.Employee">
         select * from employee where id = #{id}
     </select>

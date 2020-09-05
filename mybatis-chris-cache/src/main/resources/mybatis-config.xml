@@ -16,6 +16,9 @@
         <!--关闭积极加载-->
         <setting name="aggressiveLazyLoading" value="false"/>
         <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+
+        <!--开启二级缓存,默认已开启-->
+        <setting name="cacheEnabled" value="true"/>
     </settings>
 
     <!--

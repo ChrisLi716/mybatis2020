@@ -82,6 +82,42 @@ public class TestCacheSql {
 
 
     /**
+     * 测试二级缓存
+     */
+    @Test
+    public void testSecondCache() throws IOException {
+        SqlSessionFactory sqlSessionFactory;
+        SqlSession openSession_1 = null;
+        SqlSession openSession_2 = null;
+        try {
+            sqlSessionFactory = getSqlSessionFactory();
+            openSession_1 = sqlSessionFactory.openSession(true);
+            CacheMapper cacheMapper1 = openSession_1.getMapper(CacheMapper.class);
+
+            openSession_2 = sqlSessionFactory.openSession(true);
+            CacheMapper cacheMapper2 = openSession_2.getMapper(CacheMapper.class);
+
+            // 第一次查询
+            Employee emp = cacheMapper1.getEmpById(1);
+            System.out.println(emp.toString());
+
+            // 查出的数据都会先放在一级缓存中，只有会话被关闭，一级缓存中的数据才会转移到二级缓存中，其它opensesssion才能在二级缓存中获取
+            closeSession(openSession_1);
+
+            // 第二次查询
+            Employee emp2 = cacheMapper2.getEmpById(1);
+            System.out.println(emp2.toString());
+            closeSession(openSession_2);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            closeSession(openSession_1, openSession_2);
+        }
+    }
+
+
+    /**
      * 关闭SqlSession
      */
     private void closeSession(SqlSession... sqlSession) {
