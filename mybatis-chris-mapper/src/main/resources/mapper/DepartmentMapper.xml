@@ -4,19 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.dao.mapper.DepartmentMapper">
 
-    <select id="getDeptById" resultType="com.mybatis.entity.Department">
+    <select id="getDeptById" resultType="com.Department">
          select id, department_name name from department t where t.id=#{id}
     </select>
 
     <!--嵌套结果集关联查询-->
-    <resultMap id="deptWithEmps" type="com.mybatis.entity.Department">
+    <resultMap id="deptWithEmps" type="com.Department">
         <id column="did" property="id"/>
         <result column="department_name" property="name"/>
         <!--
         定义集合类型的属性
         ofType:指定集合里面的元素类型
         -->
-        <collection property="emps" ofType="com.mybatis.entity.Employee">
+        <collection property="emps" ofType="com.Employee">
             <id column="id" property="id"/>
             <result column="last_name" property="lastName"/>
             <result column="email" property="email"/>
@@ -38,7 +38,7 @@
     1.先查询出部门信息
     2.再根据部门ID查询出员工信息
     -->
-    <resultMap id="deptWithEmpsByStep" type="com.mybatis.entity.Department">
+    <resultMap id="deptWithEmpsByStep" type="com.Department">
         <id column="id" property="id"/>
         <result column="department_name" property="name"/>
         <!--
@@ -48,7 +48,7 @@
         fetchType: 即使全局打开了延时加载，也可以指定针对此关联查询是否要进行延时加载，
                    eager：立即加载，lazy:延时加载
         -->
-        <collection property="emps" select="com.mybatis.dao.mapper.DynamicSqlMapper.getEmployeeByDeptId" column="id"
+        <collection property="emps" select="com.DynamicSqlMapper.getEmployeeByDeptId" column="id"
                     javaType="List" fetchType="lazy"/>
     </resultMap>
     <select id="getDeptByIdStep" resultMap="deptWithEmpsByStep">

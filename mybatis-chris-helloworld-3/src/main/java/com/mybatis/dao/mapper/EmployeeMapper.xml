@@ -3,15 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- mybatis 支持namespace与接口名称绑定 -->
-<mapper namespace="com.mybatis.dao.mapper.DynamicSqlMapper">
-    <select id="getEmployeeById" resultType="com.mybatis.entity.Employee">
+<mapper namespace="com.DynamicSqlMapper">
+    <select id="getEmployeeById" resultType="com.Employee">
         select id, last_name lastName, email, gender
         from employee
         where id = #{id}
     </select>
 
     <!-- 测试 mapUnderscoreToCamelCase 为true-->
-    <select id="getEmployeeById2" resultType="com.mybatis.entity.Employee">
+    <select id="getEmployeeById2" resultType="com.Employee">
         select *
         from employee
         where id = #{id}

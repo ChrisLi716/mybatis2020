@@ -3,10 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- mybatis 支持namespace与接口名称绑定 -->
-<mapper namespace="com.mybatis.dao.mapper.DynamicSqlMapper">
+<mapper namespace="com.DynamicSqlMapper">
 
 
-    <select id="getEmployeeById" resultType="com.mybatis.entity.Employee">
+    <select id="getEmployeeById" resultType="com.Employee">
         select *
         from employee
         where id = #{id}
@@ -18,7 +18,7 @@
     useGeneratedKeys: 设置为true，使用自增主键策略获取主键
     keyProperty: 指定对应的主键属性，即当获取主键后将值封装给JavaBean中的哪个属性
     -->
-    <insert id="addEmployee" parameterType="com.mybatis.entity.Employee" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addEmployee" parameterType="com.Employee" useGeneratedKeys="true" keyProperty="id">
         insert into employee (last_name, email, gender)
         values (#{lastName}, #{email}, #{gender})
     </insert>
@@ -27,7 +27,7 @@
     <!--
     使用Oracle Sequence添加员工记录前获取ID
     -->
-    <insert id="addEmployee" parameterType="com.mybatis.entity.Employee" databaseId="oracle">
+    <insert id="addEmployee" parameterType="com.Employee" databaseId="oracle">
         <!--
         keyProperty: 指定对应的主键属性，即当获取主键后将值封装给JavaBean中的哪个属性
         order: BEFORE 当前SQL在插入SQL之前运行
@@ -45,7 +45,7 @@
     <!--
     使用Oracle Sequence添加员工记录后获取ID
      -->
-    <insert id="addEmployee" parameterType="com.mybatis.entity.Employee" databaseId="oracle">
+    <insert id="addEmployee" parameterType="com.Employee" databaseId="oracle">
         <!--
         keyProperty: 指定对应的主键属性，即当获取主键后将值封装给JavaBean中的哪个属性
         order: BEFORE 当前SQL在插入SQL之前运行
@@ -76,21 +76,21 @@
 
 
     <!-- 多参数-->
-    <select id="getEmployeeByIdAndName" resultType="com.mybatis.entity.Employee">
+    <select id="getEmployeeByIdAndName" resultType="com.Employee">
         select *
         from employee
         where id = #{param1}
           and last_name = #{param2}
     </select>
 
-    <select id="getEmployeeByIdAndName2" resultType="com.mybatis.entity.Employee">
+    <select id="getEmployeeByIdAndName2" resultType="com.Employee">
         select *
         from employee
         where id = #{id}
           and last_name = #{lastName}
     </select>
 
-    <select id="getEmployeeByMap" resultType="com.mybatis.entity.Employee">
+    <select id="getEmployeeByMap" resultType="com.Employee">
         select *
         from employee
         where id = #{p_id}
@@ -98,7 +98,7 @@
     </select>
 
     <!--动态SQL-->
-    <select id="dynamicSql" resultType="com.mybatis.entity.Employee">
+    <select id="dynamicSql" resultType="com.Employee">
         select *
         from ${tableName}
         where gender = #{p_gender}
@@ -111,7 +111,7 @@
      需要指定字段值为空时的JDBC类型jdbcType=NULL,
      或者在全局配置中设置 <setting name="jdbcTypeForNull" value="NULL"/>
     -->
-    <insert id="addEmployeeWithNull" parameterType="com.mybatis.entity.Employee" databaseId="oracle">
+    <insert id="addEmployeeWithNull" parameterType="com.Employee" databaseId="oracle">
         <selectKey keyProperty="id" order="BEFORE" resultType="Integer">
             select EMPLOYEES_SEQ.nextval from dual
         </selectKey>
@@ -129,7 +129,7 @@
     </select>
 
     <!--测试返回结果为多个MAP对象-->
-    <select id="getEmployeeByGenderReturnMap" resultType="com.mybatis.entity.Employee">
+    <select id="getEmployeeByGenderReturnMap" resultType="com.Employee">
         select *
         from employee t
         where t.gender = #{gender}
@@ -141,7 +141,7 @@
     1.先查询出部门信息
     2.再根据部门ID查询出员工信息
     -->
-    <select id="getEmployeeByDeptId" resultType="com.mybatis.entity.Employee">
+    <select id="getEmployeeByDeptId" resultType="com.Employee">
         select *
         from employee
         where department_id = #{department_id}

@@ -24,7 +24,7 @@
 	alias: 为Java类型指定别名
 	-->
 	<typeAliases>
-		<typeAlias type="com.mybatis.entity.Employee" alias="emp"/>
+		<typeAlias type="com.Employee" alias="emp"/>
 
 		<!--
 		为当前包以及子包里面的类起一个默认的别名

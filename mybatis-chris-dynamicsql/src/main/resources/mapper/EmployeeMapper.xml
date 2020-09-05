@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mybatis.dao.mapper.DynamicSqlMapper">
+<mapper namespace="com.DynamicSqlMapper">
 
-    <select id="getempsbyconditionIf" resultType="com.mybatis.entity.Employee">
+    <select id="getempsbyconditionIf" resultType="com.Employee">
         select * from employee t
         <!--
         where:用来封装查询条件，会将SQL中多出来的and和or去掉,但是只去掉第一个and和or
@@ -28,7 +28,7 @@
         </where>
     </select>
 
-    <select id="getempsbyconditionTrim" resultType="com.mybatis.entity.Employee">
+    <select id="getempsbyconditionTrim" resultType="com.Employee">
         select * from employee t
 
         <!--
@@ -56,7 +56,7 @@
     <!--
     分技选择
     -->
-    <select id="getempsbyconditionChoose" resultType="com.mybatis.entity.Employee">
+    <select id="getempsbyconditionChoose" resultType="com.Employee">
         select * from employee t
         <where>
             <choose>
@@ -104,7 +104,7 @@
              遍历map时，index是当前元素的key，item为当前元素的值
        #{变量名}就能取出变量的值也就是当前遍历出的元素
     -->
-    <select id="getEmpsByConditionForeach" resultType="com.mybatis.entity.Employee">
+    <select id="getEmpsByConditionForeach" resultType="com.Employee">
         select * from employee where id in
         <foreach collection="list" item="id" separator="," open="(" close=")" index="inx">
             #{id}
@@ -181,7 +181,7 @@
     -->
 
     <!--根据当启用的数据库来进行不同的查询-->
-    <select id="getInnerParameters" resultType="com.mybatis.entity.Employee">
+    <select id="getInnerParameters" resultType="com.Employee">
         <if test="_databaseId=='mysql'">
             select * from employee
             <where>
@@ -199,7 +199,7 @@
 
 
     <!--如果lastName有值则进行模糊查询-->
-    <select id="getEmpByBind" resultType="com.mybatis.entity.Employee">
+    <select id="getEmpByBind" resultType="com.Employee">
         <!--bind 将OGNL表达式的值绑定到一个变量中，方便后面引用这个变量的值-->
         <bind name="_lastName" value="'%'+lastName+'%'"/>
         select
