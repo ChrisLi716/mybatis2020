@@ -19,3 +19,7 @@ FOREIGN KEY(department_id) REFERENCES department(id);
 
 INSERT INTO department(name) values ('开发部');
 INSERT INTO department(name) values ('测试部');
+
+
+ALTER TABLE employee ADD COLUMN abc VARCHAR(255) DEFAULT '';
+ALTER TABLE employee DROP COLUMN abc;

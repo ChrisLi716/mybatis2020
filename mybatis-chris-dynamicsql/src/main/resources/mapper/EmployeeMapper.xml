@@ -111,6 +111,10 @@
         </foreach>
     </select>
 
+    <!--
+     mysql 批量写入数据库
+     insert into employee(last_name, email,gender,department_id) values (),()
+     -->
     <insert id="addEmpsInBatch">
         insert into employee (last_name, email,gender,department_id)
         <foreach collection="emps" item="emp" open="values" separator=",">
@@ -118,17 +122,120 @@
         </foreach>
     </insert>
 
-   <!-- Caused by: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into employee (last_name, email,gender,department_id)values
-    (' at line 4
-    需要打开MYSQL的批量写入模式:allowMultiQueries=true
-    jdbc.home.url=jdbc:mysql://192.168.101.127:3306/chris?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT
-    -->
-    <insert id="addEmpsInBatch2">
-        <foreach collection="emps" item="emp"  separator=";">
+    <!-- Caused by: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into employee (last_name, email,gender,department_id)values
+     (' at line 4
+     需要打开MYSQL的批量写入模式:allowMultiQueries=true
+     jdbc.home.url=jdbc:mysql://192.168.101.127:3306/chris?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT
+     -->
+    <insert id="addEmpsInBatch2InMySql">
+        <foreach collection="emps" item="emp" separator=";">
             insert into employee (last_name, email,gender,department_id)values
             (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
         </foreach>
     </insert>
 
+    <!--
+     oracle 不支持mysql这种批量写入数据库
+     insert into employee(last_name, email,gender,department_id) values (),()
+     但是支持如下三种
+     1. 将多条语句放在begin和end之间
+     begin
+        insert into employee(last_name, email,gender,department_id) values ();
+        insert into employee(last_name, email,gender,department_id) values ();
+        insert into employee(last_name, email,gender,department_id) values ();
+     end;
+     2. 利用中间表
+         insert into employee(last_name, email,gender,department_id) select employees_seq.nextval, last_name, email from (
+            select 'test_a_01' last_name, 'test_a_01@163.com' email from dual;
+            union
+            select 'test_a_02' last_name, 'test_a_02@gmail.com' email from dual;
+            union
+            select 'test_a_03' last_name, 'test_a_03@gmail.com' email from dual;
+         )
+    -->
+
+    <insert id="addEmpsInBatchInOracle" databaseId="oracle">
+        <foreach collection="emps" item="emp" open="begin" close="end;" separator=";">
+            insert into employee (<include refid="emp_insert_fields"/>)
+            (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
+        </foreach>
+    </insert>
+
+    <insert id="addEmpsInBatch2InOracle" databaseId="oracle">
+        insert into employee(<include refid="emp_insert_fields"/>)
+        <foreach collection="emps" item="emp"
+                 open="select employees_seq.nextval, last_name, email, gender, department_id from(" close=")"
+                 separator="union">
+            select #{emp.lastName} last_name, #{emp.email} email, #{emp.gender} gender, #{emp.dept.id} department_id
+            from dual;
+        </foreach>
+
+    </insert>
+
+    <!--
+    两个内置参数
+    1. _parameter: 代表传入方法的整个参数
+        如果是一个参数，_parameter就表示这个参数
+        如果是多个参数，参数会被mybatis封装成为一个map，_parameter就代表这个map
+    2. _databaseId: 如果配置了databaseIdProvider,_databaseIdy就是代表当前使用的数据库别名
+    -->
+
+    <!--根据当启用的数据库来进行不同的查询-->
+    <select id="getInnerParameters" resultType="com.mybatis.entity.Employee">
+        <if test="_databaseId=='mysql'">
+            select * from employee
+            <where>
+                <if test="_parameter!=null">
+                    last_name = #{_parameter.lastName}
+                </if>
+            </where>
+
+        </if>
+        <if test="_databaseId=='mysql'">
+            select * from t_employee
+        </if>
+
+    </select>
+
+
+    <!--如果lastName有值则进行模糊查询-->
+    <select id="getEmpByBind" resultType="com.mybatis.entity.Employee">
+        <!--bind 将OGNL表达式的值绑定到一个变量中，方便后面引用这个变量的值-->
+        <bind name="_lastName" value="'%'+lastName+'%'"/>
+        select
+        <include refid="emp_insert_fields"/>
+        from employee
+        <where>
+            <if test="_parameter != null and lastName !='' ">
+                last_name LIKE #{_lastName}
+            </if>
+        </where>
+    </select>
+
+
+    <!--
+    include
+    1.可以引用sql标签中定义的SQL片断
+    2.可以定义属性变量，可以在sql标签使用${testColumn}来获取属性变量的值
+    -->
+    <insert id="addEmpsWithCondistionInclude">
+        insert into employee (
+        <include refid="emp_insert_fields">
+            <property name="testColumn" value="abc"/>
+        </include>
+        )
+        <foreach collection="emps" item="emp" open="values" separator=",">
+            (#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
+        </foreach>
+    </insert>
+
+    <!--
+    sql标签用来抽取可重用的sql片段
+    1.将常用的列名抽取出来，方便查询或插入中引用
+    2.include来引用sql标签中的sql片断
+    -->
+    <sql id="emp_insert_fields">
+        last_name, email,gender,department_id,${testColumn}
+    </sql>
 
 </mapper>

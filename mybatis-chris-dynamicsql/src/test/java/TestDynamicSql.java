@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -176,7 +175,7 @@ public class TestDynamicSql {
             Employee emp1 = new Employee("S4", "s4@gmail.com", "F", new Department(1));
             Employee emp2 = new Employee("S5", "s5@gmail.com", "M", new Department(2));
             Employee emp3 = new Employee("S6", "s6@gmail.com", "F", new Department(2));
-            int count = dynamicSqlMapper.addEmpsInBatch(Arrays.asList(emp1, emp2, emp3));
+            int count = dynamicSqlMapper.addEmpsInBatchInMySql(Arrays.asList(emp1, emp2, emp3));
             System.out.println("new added employee count:" + count);
         } catch (IOException e) {
             e.printStackTrace();
@@ -188,5 +187,60 @@ public class TestDynamicSql {
         }
     }
 
+    /**
+     * 测试bind
+     */
+    @Test
+    public void testBind() throws IOException {
+        SqlSessionFactory sqlSessionFactory;
+        SqlSession openSession = null;
+        try {
+            sqlSessionFactory = getSqlSessionFactory();
+            openSession = sqlSessionFactory.openSession(true);
+            DynamicSqlMapper dynamicSqlMapper = openSession.getMapper(DynamicSqlMapper.class);
+            Employee emp = new Employee();
+            // 查询名称中包括a的员工记录
+            emp.setLastName("a");
+
+            List<Employee> emps = dynamicSqlMapper.getEmpByBind(emp);
+            for (Employee employee : emps) {
+                System.out.println(employee.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (null != openSession) {
+                openSession.close();
+            }
+        }
+    }
+
+
+    /**
+     * 测试foreach insert
+     */
+    @Test
+    public void testIncludeSQL() throws IOException {
+        SqlSessionFactory sqlSessionFactory;
+        SqlSession openSession = null;
+        try {
+            sqlSessionFactory = getSqlSessionFactory();
+            openSession = sqlSessionFactory.openSession(true);
+            DynamicSqlMapper dynamicSqlMapper = openSession.getMapper(DynamicSqlMapper.class);
+            Employee emp1 = new Employee("S4", "s4@gmail.com", "F", new Department(1));
+            Employee emp2 = new Employee("S5", "s5@gmail.com", "M", new Department(2));
+            Employee emp3 = new Employee("S6", "s6@gmail.com", "F", new Department(2));
+            int count = dynamicSqlMapper.addEmpsWithCondistionInclude(Arrays.asList(emp1, emp2, emp3));
+            System.out.println("new added employee count:" + count);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (null != openSession) {
+                openSession.close();
+            }
+        }
+    }
 
 }

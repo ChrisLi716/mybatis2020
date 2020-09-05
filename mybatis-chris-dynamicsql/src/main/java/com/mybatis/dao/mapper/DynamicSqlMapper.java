@@ -17,9 +17,20 @@ public interface DynamicSqlMapper {
 
     List<Employee> getEmpsByConditionForeach(List<Integer> ids);
 
-    int addEmpsInBatch(@Param("emps") List<Employee> employees);
+    int addEmpsInBatchInMySql(@Param ("emps") List<Employee> employees);
 
-    int addEmpsInBatch2(@Param("emps") List<Employee> employees);
+
+    int addEmpsInBatch2InMysql(@Param ("emps") List<Employee> employees);
+
+    int addEmpsInBatchInOracle(@Param ("emps") List<Employee> employees);
+
+    List<Employee> getInnerParameters(Employee emp);
+
+    List<Employee> getEmpByBind(Employee emp);
+
+    int addEmpsWithCondistionInclude(@Param ("emps") List<Employee> employees);
+
+
 }
 
 
