@@ -10,7 +10,7 @@
     #{id}：从传递过来的参数中取出id值
     public Employee getEmpById(Integer id);
      -->
-    <select id="getEmpById" resultType="com.Employee">
+    <select id="getEmpById" resultType="com.mybatis.entity.Employee">
         select id, last_name lastName, email, gender
         from employee
         where id = #{id}

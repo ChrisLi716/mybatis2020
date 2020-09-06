@@ -24,4 +24,5 @@
     <sql id="insert_columns">
         last_name, email, gender, department_id
     </sql>
+
 </mapper>

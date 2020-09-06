@@ -4,7 +4,7 @@ import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
 @Data
-@Alias("employeeAlias")
+@Alias ("employeeAlias")
 public class Employee {
     private int id;
     private String lastName;

@@ -16,7 +16,7 @@
     alias: 为Java类型指定别名
     -->
     <typeAliases>
-        <typeAlias type="com.Employee" alias="emp"/>
+        <typeAlias type="com.mybatis.entity.Employee" alias="emp"/>
 
         <!--
         为当前包以及子包里面的类起一个默认的别名
@@ -44,16 +44,16 @@
             </dataSource>
         </environment>
 
-       <!-- 未配置，请自行实现
-       <environment id="dev_oracle">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="${oracle.driver}"/>
-                <property name="url" value="${oracle.url}"/>
-                <property name="username" value="${oracle.username}"/>
-                <property name="password" value="${oracle.password}"/>
-            </dataSource>
-        </environment>-->
+        <!-- 未配置，请自行实现
+        <environment id="dev_oracle">
+             <transactionManager type="JDBC"/>
+             <dataSource type="POOLED">
+                 <property name="driver" value="${oracle.driver}"/>
+                 <property name="url" value="${oracle.url}"/>
+                 <property name="username" value="${oracle.username}"/>
+                 <property name="password" value="${oracle.password}"/>
+             </dataSource>
+         </environment>-->
     </environments>
 
     <!--

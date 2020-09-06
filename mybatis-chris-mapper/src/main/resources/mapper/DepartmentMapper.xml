@@ -4,19 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.dao.mapper.DepartmentMapper">
 
-    <select id="getDeptById" resultType="com.Department">
-         select id, department_name name from department t where t.id=#{id}
+    <select id="getDeptById" resultType="com.mybatis.entity.Department">
+        select id, department_name name from department t where t.id=#{id}
     </select>
 
     <!--嵌套结果集关联查询-->
-    <resultMap id="deptWithEmps" type="com.Department">
+    <resultMap id="deptWithEmps" type="com.mybatis.entity.Department">
         <id column="did" property="id"/>
         <result column="department_name" property="name"/>
         <!--
         定义集合类型的属性
         ofType:指定集合里面的元素类型
         -->
-        <collection property="emps" ofType="com.Employee">
+        <collection property="emps" ofType="com.mybatis.entity.Employee">
             <id column="id" property="id"/>
             <result column="last_name" property="lastName"/>
             <result column="email" property="email"/>
@@ -26,9 +26,9 @@
 
 
     <select id="getDeptById2" resultMap="deptWithEmps">
-		SELECT d.id did, d.department_name, e.id, e.email, e.gender, e.last_name, e.department_id
+        SELECT d.id did, d.department_name, e.id, e.email, e.gender, e.last_name, e.department_id
         FROM department d
-	    LEFT JOIN employee e ON e.department_id = d.id
+        LEFT JOIN employee e ON e.department_id = d.id
         WHERE d.id = #{id}
     </select>
 
@@ -38,7 +38,7 @@
     1.先查询出部门信息
     2.再根据部门ID查询出员工信息
     -->
-    <resultMap id="deptWithEmpsByStep" type="com.Department">
+    <resultMap id="deptWithEmpsByStep" type="com.mybatis.entity.Department">
         <id column="id" property="id"/>
         <result column="department_name" property="name"/>
         <!--

@@ -16,7 +16,7 @@
     alias: 为Java类型指定别名
     -->
     <typeAliases>
-        <typeAlias type="com.Employee" alias="emp"/>
+        <typeAlias type="com.mybatis.entity.Employee" alias="emp"/>
 
         <!--
         为当前包以及子包里面的类起一个默认的别名
@@ -44,16 +44,16 @@
             </dataSource>
         </environment>
 
-       <!-- 未配置，请自行实现
-       <environment id="dev_oracle">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="${oracle.driver}"/>
-                <property name="url" value="${oracle.url}"/>
-                <property name="username" value="${oracle.username}"/>
-                <property name="password" value="${oracle.password}"/>
-            </dataSource>
-        </environment>-->
+        <!-- 未配置，请自行实现
+        <environment id="dev_oracle">
+             <transactionManager type="JDBC"/>
+             <dataSource type="POOLED">
+                 <property name="driver" value="${oracle.driver}"/>
+                 <property name="url" value="${oracle.url}"/>
+                 <property name="username" value="${oracle.username}"/>
+                 <property name="password" value="${oracle.password}"/>
+             </dataSource>
+         </environment>-->
     </environments>
 
     <!--
@@ -73,12 +73,12 @@
 
     <!-- 将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件（mybatis-config.xml）中 -->
     <mappers>
-       <!-- 批量注册
-       name:接口所在的包路径
-       适用于通过注解实现SQL映射的接口，对于通过配置文件实现的SQL映射，需要将XML文件与接口放在一起，否则无法批量注册
-       -->
+        <!-- 批量注册
+        name:接口所在的包路径
+        适用于通过注解实现SQL映射的接口，对于通过配置文件实现的SQL映射，需要将XML文件与接口放在一起，否则无法批量注册
+        -->
         <mapper class="com.DynamicSqlMapper"/>
-       <!-- <package name="com.mybatis.dao.mapper"/>-->
+        <!-- <package name="com.mybatis.dao.mapper"/>-->
     </mappers>
 
 </configuration>

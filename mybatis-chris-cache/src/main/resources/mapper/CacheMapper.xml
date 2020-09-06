@@ -18,7 +18,7 @@
      type：自定义缓存的全类名，自定义缓存需要实现Cache接口
      -->
     <cache eviction="FIFO" flushInterval="60000" readOnly="false" size="1024"/>
-    <select id="getEmpById" resultType="com.Employee" useCache="true">
+    <select id="getEmpById" resultType="com.mybatis.entity.Employee" useCache="true">
         select * from employee where id = #{id}
     </select>
 
