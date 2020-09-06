@@ -9,9 +9,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
-public class TestCacheSql {
+public class TestEhCacheSql {
 
     private SqlSessionFactory getSqlSessionFactory() throws IOException {
         String resource = "mybatis-config.xml";

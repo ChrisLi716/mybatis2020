@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mybatis.dao.mapper.CacheMapper">
+<mapper namespace="com.CacheMapper">
 
     <!--
      eviction:缓存的回收策略,默认的是 LRU。
@@ -18,8 +18,19 @@
      type：自定义缓存的全类名，自定义缓存需要实现Cache接口
      -->
     <cache eviction="FIFO" flushInterval="60000" readOnly="false" size="1024"/>
-    <select id="getEmpById" resultType="com.mybatis.entity.Employee">
+    <select id="getEmpById" resultType="com.Employee" useCache="true">
         select * from employee where id = #{id}
     </select>
 
+
+    <insert id="addEmp" useGeneratedKeys="true" keyProperty="id" flushCache="false">
+        insert into employee (<include refid="insert_columns"/>)
+        values
+        (#{lastName},#{email},#{gender},#{dept.id})
+    </insert>
+
+
+    <sql id="insert_columns">
+        last_name, email, gender, department_id
+    </sql>
 </mapper>

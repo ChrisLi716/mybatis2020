@@ -26,7 +26,7 @@
         1.SESSION：当前会话sqlsession的所有查询数据都会被缓存
         2.STATEMENT:同一会话的两次不同的sql间不会共享数据发，即可以禁用一级缓存
         -->
-        <setting name="localCacheScope" value=""/>
+        <setting name="localCacheScope" value="SESSION"/>
     </settings>
 
     <!--
@@ -35,7 +35,7 @@
     alias: 为Java类型指定别名
     -->
     <typeAliases>
-        <typeAlias type="com.Employee" alias="emp"/>
+        <typeAlias type="com.mybatis.entity.Employee" alias="emp"/>
 
         <!--
         为当前包以及子包里面的类起一个默认的别名

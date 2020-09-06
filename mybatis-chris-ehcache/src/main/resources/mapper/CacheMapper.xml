@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.mapper.CacheMapper">
+
+    <!--
+     type：自定义缓存的全类名，自定义缓存需要实现Cache接口
+     -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <select id="getEmpById" resultType="com.mybatis.entity.Employee" useCache="true">
+        select * from employee where id = #{id}
+    </select>
+
+
+    <insert id="addEmp" useGeneratedKeys="true" keyProperty="id" flushCache="false">
+        insert into employee (<include refid="insert_columns"/>)
+        values
+        (#{lastName},#{email},#{gender},#{dept.id})
+    </insert>
+
+
+    <sql id="insert_columns">
+        last_name, email, gender, department_id
+    </sql>
+</mapper>
